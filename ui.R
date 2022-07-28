@@ -1,4 +1,5 @@
 library(leaflet)
+options( warn = -1 )
 
 
 navbarPage("Lake Michigan", id="nav",
@@ -17,31 +18,37 @@ navbarPage("Lake Michigan", id="nav",
         # Shiny versions prior to 0.11 should use class = "modal" instead.
         absolutePanel(id = "controls", class = "panel panel-default", fixed = FALSE,
                       draggable = TRUE, top = 15, left = "auto", right = 80, bottom = "auto",
-                      width = 400, height = "auto",
+                      width = 550, height = "auto",
                       h3("Click on a model point for a plot"),
                       htmlOutput("plotwin"),
                       textOutput("whichstation"),
                       
                       fluidRow(
                         
-                        column(6,
+                        column(3,
                                h3("Plot Station?"),
                                checkboxInput("checkbox", "Check for Yes", value = FALSE)),
  
-                   column(6,
+                   column(3,
                         radioButtons("radio", h3("Plot Limits"),
                                      choices = list("Model min-max" = 1, "Fixed" = 2),
                                                     selected = 1)),
+                     column(6, sliderInput("timeRange", label = "Time range", width = 300,
+                                           timeFormat="%F", 
+                                        min = as.POSIXct("2010-01-02 00:00:00",tz = 'GMT'),
+                                        max = as.POSIXct("2011-01-01 00:00:00",tz = 'GMT'),
+                                        value = c(as.POSIXct("2010-01-01 00:00:00",tz = 'GMT'),
+                                                  as.POSIXct("2010-12-31 00:00:00",tz = 'GMT'))))),
                       
-                     
-        )),
+                     ),
         
         absolutePanel(id = "controls2", class = "panel panel-default", fixed = FALSE,
-                      draggable = TRUE, left="auto", right = 80, top = 250, bottom = "auto",
+                      draggable = TRUE, left="auto", right = 80, top = 260, bottom = "auto",
                       width = 550, height="auto",
-                      plotOutput("timeplot",width=500)      
                       
-        ),
+                      plotOutput("timeplot",width=550) )     
+                      
+        ,
         tags$div(id="cite",
                  'Thank You SuperZip for your example! https://shiny.rstudio.com/gallery/superzip-example.html'
         )

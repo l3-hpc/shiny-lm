@@ -124,9 +124,16 @@ function(input, output, session) {
         ymi <- 2
         yma <- 12
       }
-        
+
+        ind_1 <- which(Time == input$timeRange[1])
+        ind_2 <- which(Time == input$timeRange[2])
+        Time <- Time[ind_1:ind_2]
+        TP_Surf <- TP_Surf[ind_1:ind_2]
+        TP_Bot<- TP_Bot[ind_1:ind_2]
+         
+        xlimits=c(input$timeRange[1],input$timeRange[2])      
         plot(Time,TP_Surf,main="Total Phosphorus - Modeled",ylab="TP um/L",cex=0.3,type="l",
-             col="#006CD1",bg="#006CD1",ylim = c(ymi,yma),xlab="")
+             col="#006CD1",bg="#006CD1",ylim = c(ymi,yma),xlab="",xlim=xlimits)
         lines(Time,TP_Bot,pch=20,cex=0.3,type="l",col="#994F00",bg="#994F00")
         axis.Date(1, Time,format="%b %d")
         mtext("TP Bottom Layer", side=3, line=1, col="#994F00", cex=1, adj=1)
