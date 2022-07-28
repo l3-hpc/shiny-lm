@@ -20,14 +20,24 @@ navbarPage("Lake Michigan", id="nav",
                       width = 400, height = "auto",
                       h3("Click on a model point for a plot"),
                       htmlOutput("plotwin"),
-                      textOutput("whichstation")
+                      textOutput("whichstation"),
                       
+                      fluidRow(
+                        
+                        column(6,
+                               h3("Plot Station?"),
+                               checkboxInput("checkbox", "Check for Yes", value = FALSE)),
+ 
+                   column(6,
+                        radioButtons("radio", h3("Plot Limits"),
+                                     choices = list("Model min-max" = 1, "Fixed" = 2),
+                                                    selected = 1)),
                       
-                      
-        ),
+                     
+        )),
         
         absolutePanel(id = "controls2", class = "panel panel-default", fixed = FALSE,
-                      draggable = TRUE, left="auto", right = 80, top = 150, bottom = "auto",
+                      draggable = TRUE, left="auto", right = 80, top = 250, bottom = "auto",
                       width = 550, height="auto",
                       plotOutput("timeplot",width=500)      
                       

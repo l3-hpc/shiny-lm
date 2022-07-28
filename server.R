@@ -116,11 +116,14 @@ function(input, output, session) {
         #xb_label <- paste0("Bottom, TPmin=",ib_min,"    ",
         #                  "TPmean=",ib_mean,"    ",
         #                  "TPmax=",ib_max)
-        
-        #ymi <- min(min(TP_Surf),min(TP_Bot))
-        #yma <- max(max(TP_Surf),max(TP_Bot))
+ 
+        if(input$radio == "1"){       
+         ymi <- min(min(TP_Surf),min(TP_Bot))
+         yma <- max(max(TP_Surf),max(TP_Bot))
+      }else {
         ymi <- 2
         yma <- 12
+      }
         
         plot(Time,TP_Surf,main="Total Phosphorus - Modeled",ylab="TP um/L",cex=0.3,type="l",
              col="#006CD1",bg="#006CD1",ylim = c(ymi,yma),xlab="")
@@ -129,6 +132,7 @@ function(input, output, session) {
         mtext("TP Bottom Layer", side=3, line=1, col="#994F00", cex=1, adj=1)
         mtext("TP Surface Layer", side=3, line=1, col="#006CD1", cex=1, adj=0)
 
+        if(input$checkbox){
         if(whichstation==a$Station){       
           points(alpha$Time,alpha$TP,pch=23,col="black",bg="#D9CA4B",xlab=a$Station)
           mtext(a$Station,side=1,cex=2,line=3)
@@ -137,7 +141,7 @@ function(input, output, session) {
           points(beta$Time,beta$TP,pch=23,col="black",bg="#D9CA4B",xlab=b$Station)
           mtext(b$Station,side=1,cex=2,line=3)
           mtext(whichstation,side=4)          
-        }
+        }}
     })
       
   })
