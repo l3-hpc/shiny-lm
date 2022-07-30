@@ -51,8 +51,8 @@ dashboardPage(
                          timeFormat="%F", 
                          min = as.POSIXct("2010-01-02 00:00:00",tz = 'GMT'),
                          max = as.POSIXct("2011-01-01 00:00:00",tz = 'GMT'),
-                         value = c(as.POSIXct("2010-01-01 00:00:00",tz = 'GMT'),
-                                   as.POSIXct("2010-12-31 00:00:00",tz = 'GMT')))
+                         value = c(as.POSIXct("2010-01-02 00:00:00",tz = 'GMT'),
+                                   as.POSIXct("2011-01-01 00:00:00",tz = 'GMT')))
              )
              ),
       column(width=8,

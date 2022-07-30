@@ -1,12 +1,10 @@
 library(RColorBrewer)
 library(scales)
 library(lattice)
-library(dplyr)
-require(ncdf4)
 library(shinydashboard)
 
 #Pothoven station data
-load("Pothoven2010DF.Rdata")
+load("Pothoven2010DFct.Rdata")
 load("PHS2010.Rdata")
 #Mark's Rdata with grid data, loads 'coordsn'
 load("LM_grid.Rdata")
