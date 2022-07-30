@@ -1,6 +1,6 @@
 library(leaflet)
 library(shinydashboard)
-options( warn = -1 )
+#options( warn = -1 )
 
 dashboardPage(
 
