@@ -74,7 +74,7 @@ function(input, output, session) {
                group="Tributaries")
  
       leafletProxy("map", data = LM_grid) %>%
-          addCircles(~Lon, ~Lat, radius=700, layerId=LM_grid$Surface,
+          addCircles(~Lon, ~Lat, radius=800, layerId=LM_grid$Surface,
                     stroke=FALSE, fillOpacity=.8, fillColor="blue",group="Model") %>%
 
       addLayersControl(
