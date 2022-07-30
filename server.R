@@ -5,6 +5,9 @@ library(dplyr)
 require(ncdf4)
 library(shinydashboard)
 
+#Pothoven station data
+load("Pothoven2010DF.Rdata")
+load("PHS2010.Rdata")
 #Mark's Rdata with grid data, loads 'coordsn'
 load("LM_grid.Rdata")
 npoints <- length(LM_grid$node)
@@ -12,14 +15,9 @@ npoints <- length(LM_grid$node)
 load("TP_2Layers_2010.Rdata")
 #DolanLoadLocations
 load("DolanLoadLocations.Rdata")
-#James' Stations
-load("j-stations.Rdata")
-#stations
-stations <- data.frame(matrix(ncol=3,nrow=2))
-colnames(stations) <- c('Station','Lon','Lat')
-stations$Station <- c(a$Station,b$Station)
-stations$Lon <- c(a$Lon,b$Lon)
-stations$Lat <- c(a$Lat,b$Lat)
+stationLocations <- PHS2010
+stations <- stationLocations$Station
+stationData <- Pothoven2010DF
 whichstation <- "none"
 loadedstation <-""
 
@@ -33,7 +31,7 @@ awesome <- makeAwesomeIcon(
 function(input, output, session) {
 
   whichstation <- "None selected"
-  loadedstation <- "None loaded"
+  loadedstation <- "None selected"
   output$whichstation <- renderText({whichstation})
   output$loadedstation <- renderText({loadedstation})
 
@@ -66,7 +64,7 @@ function(input, output, session) {
 
   observe({
 
-      leafletProxy("map",data=stations) %>%
+      leafletProxy("map",data=stationLocations) %>%
 #      clearShapes() %>%
       addAwesomeMarkers(~Lon, ~Lat, icon=awesome, label = ~Station, popup=~Station,layerId=~Station,
                  group="Stations") 
@@ -188,15 +186,12 @@ function(input, output, session) {
     mtext("TP Surface Layer", side=3, line=1, col="#006CD1", cex=1, adj=0)
     
     if(input$checkbox){
-      if(loadedstation==a$Station){       
-        points(alpha$Time,alpha$TP,pch=23,col="black",bg="#D9CA4B",xlab=a$Station)
-        mtext(a$Station,side=1,cex=2,line=3)
-        mtext(whichstation,side=4)
-      }else if(loadedstation==b$Station){
-        points(beta$Time,beta$TP,pch=23,col="black",bg="#D9CA4B",xlab=b$Station)
-        mtext(b$Station,side=1,cex=2,line=3)
-        mtext(whichstation,side=4)          
-      }}
+      if(loadedstation != "None selected"){ 
+      plotstation <- stationData[stationData$Station == loadedstation,]
+      points(plotstation$Time,plotstation$TP,pch=23,col="black",bg="#D9CA4B",xlab=plotstation$Station)
+      mtext(plotstation$Station,side=1,cex=2,line=3)
+      mtext(whichstation,side=4)
+     }}
   })
 
   }
