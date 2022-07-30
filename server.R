@@ -22,9 +22,9 @@ whichstation <- "none"
 loadedstation <-""
 
 awesome <- makeAwesomeIcon(
-  icon = "fire",
-  iconColor = "black",
-  markerColor = "yellow",
+  icon = "anchor",
+  iconColor = "green",
+  markerColor = "white",
   library = "fa"
 )
 
