@@ -28,12 +28,8 @@ dashboardPage(
                   htmlOutput("plotwin")),
           box(width=NULL, solidHeader=TRUE,status="primary",
             h3("Station Data"),
-            h4("Selected Station:"),
-            textOutput("whichstation"),
-            actionLink("load", "Load Station Data"),
-            h4("Loaded Station:"),
-            textOutput("loadedstation"),
-            htmlOutput("htloaded"),
+            selectInput("dropstation", "Choose Station:",
+                        dropstations),
             h4("Plot"),
             checkboxInput("checkbox", "Check to overlay station data.", value = FALSE)
             

@@ -16,8 +16,7 @@ load("DolanLoadLocations.Rdata")
 stationLocations <- PHS2010
 stations <- stationLocations$Station
 stationData <- Pothoven2010DF
-whichstation <- "none"
-loadedstation <-""
+
 
 awesome <- makeAwesomeIcon(
   icon = "anchor",
@@ -28,27 +27,13 @@ awesome <- makeAwesomeIcon(
 
 function(input, output, session) {
 
-  whichstation <- "None selected"
-  loadedstation <- "None selected"
-  output$whichstation <- renderText({whichstation})
-  output$loadedstation <- renderText({loadedstation})
 
   ## Interactive Map ###########################################
-
-  observe({
-    event <- input$map_marker_click
-    if (is.null(event))
-      return()
-    if (!any(stations==event$id))
-      return()
-     whichstation <<- event$id
-     output$whichstation <- renderText({whichstation})
+  output$timeplot <- renderPlot({
+    plot(1,type="n",xlab="",ylab="",xaxt="n",yaxt="n")
+    mtext("Click a gridpoint to start a plot.",side=3,line=-4,cex=1.5,col="#006CD1")
   })
-
-  observeEvent(input$load, {
-    loadedstation <<- whichstation
-    output$loadedstation <- renderText({loadedstation})
-  })  
+  
   
   # Create the map
   output$map <- renderLeaflet({
@@ -59,7 +44,6 @@ function(input, output, session) {
   
   
   
-
   observe({
 
       leafletProxy("map",data=stationLocations) %>%
@@ -184,11 +168,11 @@ function(input, output, session) {
     mtext("TP Surface Layer", side=3, line=1, col="#006CD1", cex=1, adj=0)
     
     if(input$checkbox){
-      if(loadedstation != "None selected"){ 
-      plotstation <- stationData[stationData$Station == loadedstation,]
+      if(input$dropstation != "None selected"){ 
+      plotstation <- stationData[stationData$Station == input$dropstation,]
       points(plotstation$Time,plotstation$TP,pch=23,col="black",bg="#D9CA4B",xlab=plotstation$Station)
       mtext(plotstation$Station,side=1,cex=2,line=3)
-      mtext(whichstation,side=4)
+      mtext(input$dropstation,side=4)
      }}
   })
 
