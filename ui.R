@@ -4,59 +4,58 @@ library(shinydashboard)
 
 dashboardPage(
 
- 
   dashboardHeader(
-    title = "Lake Michigan - 2010"
+    title = "Lake Michigan - 2015"
   ),   
   
   dashboardSidebar(disable=TRUE),
   
   dashboardBody(
  
-       fluidRow(
-       column(width=8,
+    fluidRow(
+      column(width=8,
+      box(width=NULL, solidHeader=TRUE,status="primary",
+        leafletOutput("map")
+        )
+      ),
+      column(width=4,
         box(width=NULL, solidHeader=TRUE,status="primary",
-            leafletOutput("map")
-          )),
-        
-        # Shiny versions prior to 0.11 should use class = "modal" instead.
-        column(width=4,
-
-          box(width=NULL, solidHeader=TRUE,status="primary",
-                  h3("Model Data"),
-                  h4("Current model gridpoint is at:"),
-                  htmlOutput("plotwin")),
-          box(width=NULL, solidHeader=TRUE,status="primary",
-            h3("Station Data"),
-            selectInput("dropstation", "Choose Station:",
-                        dropstations),
-            h4("Plot"),
-            checkboxInput("checkbox", "Check to overlay station data.", value = FALSE)
-            
-        )),
-       ),
+          h3("Model Data"),
+          h4("Current model gridpoint is at:"),
+          htmlOutput("plotwin")
+          ),
+        box(width=NULL, solidHeader=TRUE,status="primary",
+          h3("Station Data"),
+          selectInput("dropstation", "Choose Station:",dropstations),
+          h4("Plot"),
+          checkboxInput("checkbox", "Check to overlay station data.", value = FALSE)
+          )
+        ),
+       ),   #End of first Fluid Row
 
     fluidRow(
       column(width=4,
-             box(width=NULL, solidHeader=TRUE, status="primary",
-             radioButtons("radio", h3("Plot Limits"),
-                          choices = list("Model min-max" = 1, "Fixed" = 2),
-                          selected = 1)),
-             box(width=NULL, solidHeader=TRUE, status="primary",
-             sliderInput("timeRange", label = "Time range", width = 300,
-                         timeFormat="%F", 
-                         min = as.POSIXct("2010-01-02 00:00:00",tz = 'GMT'),
-                         max = as.POSIXct("2011-01-01 00:00:00",tz = 'GMT'),
-                         value = c(as.POSIXct("2010-01-02 00:00:00",tz = 'GMT'),
-                                   as.POSIXct("2011-01-01 00:00:00",tz = 'GMT')))
-             )
-             ),
+        box(width=NULL, solidHeader=TRUE, status="primary",
+          radioButtons("radio", h3("Plot Limits"),
+            choices = list("Model min-max" = 1, "Fixed" = 2),
+            selected = 1)
+          ),
+        box(width=NULL, solidHeader=TRUE, status="primary",
+          sliderInput("timeRange", label = "Time range", width = 300,
+            timeFormat="%F", 
+            min = as.POSIXct("2015-01-02 00:00:00",tz = 'GMT'),
+            max = as.POSIXct("2016-01-01 00:00:00",tz = 'GMT'),
+            value = c(as.POSIXct("2015-01-02 00:00:00",tz = 'GMT'),
+            as.POSIXct("2016-01-01 00:00:00",tz = 'GMT')))
+          )
+        ),
       column(width=8,
         box(width=NULL, solidHeader=TRUE, status="primary", 
           plotOutput("timeplot")
         )     
       )
+    ) #End second Fluid Row
     
-  )
-))
+  )# End dashboard Body
+) # End dashboard Page
 

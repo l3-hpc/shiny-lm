@@ -2,3 +2,5 @@
 .RDataTmp
 .Rhistory
 UntitledR.R
+data/2010/*
+data/2015/*
