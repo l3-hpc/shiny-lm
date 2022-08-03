@@ -1,134 +1,36 @@
-#Use Vi to get rid of quotes around =
-dropstations <- c(
-"Alpha; M15" = "Alpha; M15",
-"Beta" = "Beta",
-"Omega" = "Omega",
-"GH15; GrandMth_20m; Grand2N_20m" = "GH15; GrandMth_20m; Grand2N_20m",
-"Leg C #1; Musk2S_20m; MuskMth_20m" = "Leg C #1; Musk2S_20m; MuskMth_20m",
-"Leg D #1; Musk10S_10m; Musk10S_5m" = "Leg D #1; Musk10S_10m; Musk10S_5m",
-"Leg E #1; GrandMth_10m; GrandMth_5m" = "Leg E #1; GrandMth_10m; GrandMth_5m",
-"MI11" = "MI11",
-"MI17" = "MI17",
-"MI19" = "MI19",
-"MI18M; Rac_xdeep" = "MI18M; Rac_xdeep",
-"MI27M" = "MI27M",
-"MI34" = "MI34",
-"MI32" = "MI32",
-"MI41M" = "MI41M",
-"MIFO" = "MIFO",
-"MI40" = "MI40",
-"MI47" = "MI47",
-"Rac_46" = "Rac_46",
-"Rac_110" = "Rac_110",
-"Rac_18" = "Rac_18",
-"StJoe_18" = "StJoe_18",
-"StJoe_46" = "StJoe_46",
-"StJoe_110" = "StJoe_110",
-"StJoe_xdeep" = "StJoe_xdeep",
-"Saug_46" = "Saug_46",
-"Saug_18" = "Saug_18",
-"Saug_110" = "Saug_110",
-"Sturg_110" = "Sturg_110",
-"Sturg_46" = "Sturg_46",
-"Sturg_18" = "Sturg_18",
-"Lud_18" = "Lud_18",
-"Frank_46" = "Frank_46",
-"Frank_110" = "Frank_110",
-"Frank_18" = "Frank_18",
-"Lud_110" = "Lud_110",
-"Lud_46" = "Lud_46",
-"GLBA15-1028; GLBA15-3230" = "GLBA15-1028; GLBA15-3230",
-"GLBA15-1040" = "GLBA15-1040",
-"GLBA15-3237" = "GLBA15-3237",
-"Grand10S_20m" = "Grand10S_20m",
-"Grand10S_10m; Grand10S_5m" = "Grand10S_10m; Grand10S_5m",
-"Grand2S_20m" = "Grand2S_20m",
-"Grand2S_10m; Grand2S_5m" = "Grand2S_10m; Grand2S_5m",
-"Grand2N_10m" = "Grand2N_10m",
-"Grand5N_20m" = "Grand5N_20m",
-"Grand5N_10m; Grand5N_5m; GLNS15-1255" = "Grand5N_10m; Grand5N_5m; GLNS15-1255",
-"GLBA15-3214" = "GLBA15-3214",
-"GLBA15-3221" = "GLBA15-3221",
-"Manit_110" = "Manit_110",
-"Manit_18" = "Manit_18",
-"Manit_46" = "Manit_46",
-"GLBA15-1012" = "GLBA15-1012",
-"GLBA15-3205" = "GLBA15-3205",
-"GLNS15-2047" = "GLNS15-2047",
-"GLNS15-2065" = "GLNS15-2065",
-"GLNS15-1259" = "GLNS15-1259",
-"GLNS15-2051" = "GLNS15-2051",
-"GLBA15-1048" = "GLBA15-1048",
-"GLBA15-3251" = "GLBA15-3251",
-"GLBA15-3228" = "GLBA15-3228",
-"GLBA15-1022" = "GLBA15-1022",
-"GLBA15-3268" = "GLBA15-3268",
-"GLBA15-1007" = "GLBA15-1007",
-"GLBA15-3224" = "GLBA15-3224",
-"GLBA15-1066" = "GLBA15-1066",
-"GLBA15-3217; GLNS15-1243" = "GLBA15-3217; GLNS15-1243",
-"GLBA15-1039" = "GLBA15-1039",
-"GLNS15-2059" = "GLNS15-2059",
-"GLNS15-1256" = "GLNS15-1256",
-"GH45" = "GH45",
-"Sta A" = "Sta A",
-"GLBA15-3265" = "GLBA15-3265",
-"Wauk_110" = "Wauk_110",
-"Wauk_18" = "Wauk_18",
-"GLNS15-1244" = "GLNS15-1244",
-"GLNS15-1251" = "GLNS15-1251",
-"GLNS15-1261" = "GLNS15-1261",
-"GLNS15-2058" = "GLNS15-2058",
-"GLNS15-1247" = "GLNS15-1247",
-"GLBA15-3252" = "GLBA15-3252",
-"GLNS15-2060" = "GLNS15-2060",
-"GLNS15-1260" = "GLNS15-1260",
-"GLBA15-1008; GLBA15-3245" = "GLBA15-1008; GLBA15-3245",
-"Musk10S_20m" = "Musk10S_20m",
-"Musk2S_10m; Musk2S_5m" = "Musk2S_10m; Musk2S_5m",
-"MuskMth_10m" = "MuskMth_10m",
-"Musk2N_20m" = "Musk2N_20m",
-"Musk2N_10m; Musk2N_5m" = "Musk2N_10m; Musk2N_5m",
-"Musk10N_20m; Musk10N_10m" = "Musk10N_20m; Musk10N_10m",
-"Musk10N_5m" = "Musk10N_5m",
-"GLNS15-2052" = "GLNS15-2052",
-"GLBA15-1024" = "GLBA15-1024",
-"GLBA15-1005" = "GLBA15-1005",
-"GLNS15-1248" = "GLNS15-1248",
-"GLNS15-1245" = "GLNS15-1245",
-"GLNS15-1258" = "GLNS15-1258",
-"GLBA15-3209; GLBA15-1063" = "GLBA15-3209; GLBA15-1063",
-"GLBA15-1020" = "GLBA15-1020",
-"GLNS15-2056" = "GLNS15-2056",
-"GLNS15-2053" = "GLNS15-2053",
-"GLNS15-1249" = "GLNS15-1249",
-"GLBA15-3261" = "GLBA15-3261",
-"GLBA15-1059" = "GLBA15-1059",
-"GLBA15-1043; GLBA15-3257" = "GLBA15-1043; GLBA15-3257",
-"MI23" = "MI23",
-"GLBA15-1031" = "GLBA15-1031",
-"GLNS15-2049" = "GLNS15-2049",
-"GLNS15-2063" = "GLNS15-2063",
-"GLNS15-2048" = "GLNS15-2048",
-"GLBA15-3213" = "GLBA15-3213",
-"GLNS15-1250" = "GLNS15-1250",
-"GLBA15-3229" = "GLBA15-3229",
-"GLBA15-3218; GLBA15-1016" = "GLBA15-3218; GLBA15-1016",
-"GLNS15-1253" = "GLNS15-1253",
-"GLNS15-2055" = "GLNS15-2055",
-"GLNS15-2069" = "GLNS15-2069",
-"GLNS15-1252" = "GLNS15-1252",
-"GLNS15-2050" = "GLNS15-2050",
-"GLNS15-2067" = "GLNS15-2067",
-"GLNS15-1242" = "GLNS15-1242",
-"GLNS15-2064" = "GLNS15-2064",
-"GLNS15-1254" = "GLNS15-1254",
-"GLNS15-1246" = "GLNS15-1246",
-"GLNS15-1257" = "GLNS15-1257",
-"GLNS15-2061" = "GLNS15-2061",
-"GLNS15-1263" = "GLNS15-1263",
-"GLBA15-1027" = "GLBA15-1027",
-"GLNS15-2054" = "GLNS15-2054",
-"GLNS15-1262" = "GLNS15-1262",
-"GLNS15-2057" = "GLNS15-2057"
-)
+library(dplyr)
+
+Year <- 2015
+
+#Year dependent but same filenames
+path <- file.path("data",Year,"TP_2Layers.Rdata")
+#netCDF model output and Time
+load(path)
+
+#Not dependent on year:
+#Original file Mark's Rdata LM_grid
+#I saved just node, lat, lon
+#This is for the whole FVCOM grid
+path <- file.path("data","LM_gridpoints.Rdata")
+load(path)
+#Number of gridpoints in FVCOM grid
+npoints <- length(LM_gridpoints$node)
+
+#Location of Tributaries
+#From Mark's original file, and I kept Trib, Lat/Lon, and USGS.Station
+path <- file.path("data","DolanLoadLocations.Rdata")
+load(path)
+
+#StationData is from a csv from Wilson
+#AllStations are the station/lat/lon for map markers
+path <- file.path("data","AllStations.Rdata")
+load(path)
+
+#StationData is the actual Time/TP data, also has Depth
+path <- file.path("~/R_apps/shiny-lm/data",Year,"StationData.Rdata")
+load(path)
+
+allstations <- AllStations$Station
+allsources <- unique(AllStations$Source)
+
+

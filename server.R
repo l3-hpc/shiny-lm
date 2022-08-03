@@ -2,40 +2,30 @@ library(RColorBrewer)
 library(scales)
 library(lattice)
 library(shinydashboard)
+library(dplyr)
+library(ggplot2)
 
-Year <- 2015
-
-#Year dependent but same filenames
-path <- file.path("data",Year,"TP_2Layers.Rdata")
-#netCDF model output and Time
-load(path)
-
-#Not dependent on year:
-#Original file Mark's Rdata LM_grid
-#I saved just node, lat, lon
-#This is for the whole FVCOM grid
-path <- file.path("data","LM_gridpoints.Rdata")
-load(path)
-#Number of gridpoints in FVCOM grid
-npoints <- length(LM_gridpoints$node)
-
-#Location of Tributaries
-#From Mark's original file, and I kept Trib, Lat/Lon, and USGS.Station
-path <- file.path("data","DolanLoadLocations.Rdata")
-load(path)
-
-#StationData is from a csv from Wilson
-#AllStations are the station/lat/lon for map markers
-path <- file.path("data","AllStations.Rdata")
-load(path)
-#StationData is the actual Time/TP data, also has Depth
-path <- file.path("data",Year,"StationData.Rdata")
-load(path)
-
-
-awesome <- makeAwesomeIcon(
+Pothoven <- makeAwesomeIcon(
   icon = "anchor",
   iconColor = "green",
+  markerColor = "white",
+  library = "fa"
+)
+GLNPO <- makeAwesomeIcon(
+  icon = "anchor",
+  iconColor = "blue",
+  markerColor = "white",
+  library = "fa"
+)
+CSMI <- makeAwesomeIcon(
+  icon = "anchor",
+  iconColor = "pink",
+  markerColor = "white",
+  library = "fa"
+)
+NCCA <- makeAwesomeIcon(
+  icon = "anchor",
+  iconColor = "purple",
   markerColor = "white",
   library = "fa"
 )
@@ -49,7 +39,6 @@ function(input, output, session) {
     mtext("Click a gridpoint to start a plot.",side=3,line=-4,cex=1.5,col="#006CD1")
   })
   
-  
   # Create the map
   output$map <- renderLeaflet({
     leaflet() %>%
@@ -58,16 +47,27 @@ function(input, output, session) {
   })
   
   
-  
   observe({
 
-      leafletProxy("map",data=AllStations) %>%
+      leafletProxy("map",data=AllStations[AllStations$Source=="Pothoven",]) %>%
 #      clearShapes() %>%
-      addAwesomeMarkers(~Lon, ~Lat, icon=awesome, label = ~Station, popup=~Station,layerId=~Station,
-                 group="Stations") 
+      addAwesomeMarkers(~Lon, ~Lat, icon=Pothoven, label = ~Station, popup=~Station,layerId=~layerId,
+                 group="Pothoven") 
+    
+    leafletProxy("map",data=AllStations[AllStations$Source=="GLNPO",]) %>%    
+      addAwesomeMarkers(~Lon, ~Lat, icon=GLNPO, label = ~Station, popup=~Station,layerId=~layerId,
+                      group="GLNPO") 
+      
+    leafletProxy("map",data=AllStations[AllStations$Source=="CSMI",]) %>%      
+      addAwesomeMarkers(~Lon, ~Lat, icon=CSMI, label = ~Station, popup=~Station,layerId=~layerId,
+                      group="CSMI") 
+      
+    leafletProxy("map",data=AllStations[AllStations$Source=="NCCA",]) %>%      
+      addAwesomeMarkers(~Lon, ~Lat, icon=NCCA, label = ~Station, popup=~Station,layerId=~layerId,
+                      group="NCCA") 
     
     leafletProxy("map",data=DolanLoadLocations) %>%
-      addMarkers(~Lon, ~Lat, popup=~Trib,  label=~Trib,layerId=~Trib, 
+      addMarkers(~Lon, ~Lat, popup=~Trib, label=~Trib,layerId=~Trib, 
                group="Tributaries")
  
       leafletProxy("map", data = LM_gridpoints) %>%
@@ -75,7 +75,7 @@ function(input, output, session) {
                     stroke=FALSE, fillOpacity=.8, fillColor="blue",group="Model") %>%
 
       addLayersControl(
-        overlayGroups = c("Model","Tributaries","Stations"),
+        overlayGroups = c("Model","Tributaries","Pothoven","GLNPO","CSMI","NCCA"),
         options = layersControlOptions(collapsed = TRUE)
       )
     
@@ -166,15 +166,42 @@ function(input, output, session) {
     
       if(input$checkbox){
         if(input$dropstation != "None selected"){ 
-        plotstation <- StationData[StationData$Station == input$dropstation,]
+          plotstation <- StationData[StationData$Station == input$dropstation,]
         points(plotstation$Date,plotstation$TP,pch=23,col="black",bg="#D9CA4B",cex=1.2,xlab=plotstation$Station)
         mtext(plotstation$Station,side=1,cex=2,line=3)
-        mtext(input$dropstation,side=4)
+        mtext(plotstation$Source,side=4)
       }}
   })
 
   }
 
- 
- 
+
+  ## Data Explorer ###########################################
+
+
+  output$stationstable <- DT::renderDataTable({
+    df <- StationData %>%
+      filter(
+        TP >= input$minTP,
+        TP <= input$maxTP,
+        is.null(input$insources) | Source %in% input$insources,
+        is.null(input$instations) | Station %in% input$instations
+        ) %>%
+      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', 
+          Lon, '" data-layerid="', layerId, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
+    action <- DT::dataTableAjax(session, df, outputId = "stationstable")
+    
+    DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)
+  })
+  
+  
+
+
+  
+      #updateSelectizeInput(session, 'dropstation', choices = AllStations, server = TRUE)
+    updateSelectizeInput(session, 'dropstation', choices = allstations, server = TRUE)
+
+
+
+
 }
