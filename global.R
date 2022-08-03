@@ -27,7 +27,7 @@ path <- file.path("data","AllStations.Rdata")
 load(path)
 
 #StationData is the actual Time/TP data, also has Depth
-path <- file.path("~/R_apps/shiny-lm/data",Year,"StationData.Rdata")
+path <- file.path("data/2015/StationData.Rdata")
 load(path)
 
 allstations <- AllStations$Station
