@@ -213,9 +213,9 @@ function(input, output, session) {
         TP <= input$maxTP,
         is.null(input$insources) | Source %in% input$insources,
         is.null(input$instations) | Station %in% input$instations
-        ) %>%
-      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', 
-          Lon, '" data-layerid="', layerId, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
+        ) #%>%
+      #mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', 
+      #    Lon, '" data-layerid="', layerId, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
     action <- DT::dataTableAjax(session, df, outputId = "stationstable")
     
     DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)
