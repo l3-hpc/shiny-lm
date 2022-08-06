@@ -187,15 +187,14 @@ function(input, output, session) {
       mtext("TP Bottom Layer", side=3, line=1, col="#994F00", cex=1, adj=1)
       mtext("TP Surface Layer", side=3, line=1, col="#006CD1", cex=1, adj=0)
       
-      rbPal <- colorRampPalette(c('red','blue'))
+      #rbPal <- colorRampPalette(brewer.pal(9,"Blues"))(5)
       
-    
       if(input$checkbox){
         if(input$dropstation != "None selected"){ 
           plotstation <- StationData[StationData$Station == input$dropstation,]
-          plotstation$Col <- rbPal(10)[as.numeric(cut(plotstation$Depth,breaks = 10))]
-          points(plotstation$Date,plotstation$TP,pch=23,col="black",bg=plotstation$Col,cex=1.2,xlab=plotstation$Station)
-        #points(plotstation$Date,plotstation$TP,pch=23,col="black",bg="#D9CA4B",cex=1.2,xlab=plotstation$Station)
+          #plotstation$Col <- rbPal[as.numeric(cut(plotstation$Depth,breaks = 3))]
+          #points(plotstation$Date,plotstation$TP,pch=23,col="black",bg=plotstation$Col,cex=1.2,xlab=plotstation$Station)
+        points(plotstation$Date,plotstation$TP,pch=23,col="black",bg="#D9CA4B",cex=1.2,xlab=plotstation$Station)
         mtext(plotstation$Station,side=1,cex=1,line=3)
       }}
   })

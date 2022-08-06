@@ -28,30 +28,34 @@ dashboardPage(
       tabItem(tabName="nav",
         #Row
         fluidRow(
-          column(width=5,
+          column(width=6,
                  box(width=NULL, solidHeader=TRUE,status="primary",
                      leafletOutput("map")
                  )),
-          column(width=5,
-                 box(width=NULL,solidHeader=TRUE,status="primary",
-                     
-                     plotOutput("timeplot"))),
-                 column(width=2,
-                 box(width=NULL,solidHeader=TRUE,status="primary",
+          column(width=6,
+                 fluidRow(
+                   column(width=12,
+                     box(width=NULL,solidHeader=TRUE,status="primary",
+                     plotOutput("timeplot")))),
+                 fluidRow(
+                    column(width=5,
                      strong("Model Output"),
                      htmlOutput("plotwin"),
                      br(),
-                             selectInput("dropstation", "Station", "Alpha; M15"),
-                             checkboxInput("checkbox", "Check to overlay station data.", value = FALSE),
-                             radioButtons("radio", "Plot Limits",
+                        selectInput("dropstation", "Station", "Alpha; M15"),
+                       checkboxInput("checkbox", "Check to overlay station data.", value = FALSE)),
+                    column(width=3,
+                       radioButtons("radio", "Plot Limits",
                                           choices = list("Model min-max" = 1, "Fixed" = 2),
-                                         selected = 1),
-            sliderInput("timeRange", label = "Time range", 
-             timeFormat="%F", 
+                                         selected = 1)),
+                    column(width=4,
+                       sliderInput("timeRange", label = "Time range", 
+                          timeFormat="%F", 
                                      min = as.POSIXct("2015-01-02 00:00:00",tz = 'GMT'),
                                      max = as.POSIXct("2016-01-01 00:00:00",tz = 'GMT'),
                                      value = c(as.POSIXct("2015-01-02 00:00:00",tz = 'GMT'),
                                                as.POSIXct("2016-01-01 00:00:00",tz = 'GMT'))))
+                 )
                  )
                 )#--End Row
       ),
@@ -67,10 +71,10 @@ dashboardPage(
              column(3,
                 selectInput("instations", "Stations", multiple = TRUE, c("All stations"="", structure(allstations)))
              ),
-            column(2,
+            column(3,
               numericInput("minTP", "Min TP", min=0, max=47.4, value=0)
             ),
-            column(2,
+            column(3,
               numericInput("maxTP", "Max TP", min=0, max=47.4, value=47.4)
             )
         ),
