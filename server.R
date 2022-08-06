@@ -26,19 +26,7 @@ npoints <- length(LM_gridpoints$node)
 path <- file.path("data","DolanLoadLocations.Rdata")
 load(path)
 
-#StationData is from a csv from Wilson
-#AllStations are the station/lat/lon for map markers
-path <- file.path("data","AllStations.Rdata")
-load(path)
 
-#StationData is the actual Time/TP data, also has Depth
-path <- file.path("~/R_apps/shiny-lm/data",Year,"StationData.Rdata")
-load(path)
-
-allstations <- AllStations$Station
-allsources <- unique(AllStations$Source)
-
-muskstations <- AllStations$Station[AllStations$Zone == "Muskegon_Grand_Zone"]
 
 Pothoven <- makeAwesomeIcon(
   icon = "anchor",
