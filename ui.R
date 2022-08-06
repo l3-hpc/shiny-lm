@@ -21,47 +21,40 @@ dashboardPage(
 
   #--Dashboard  
   dashboardBody(
+    tags$style(type = "text/css", "#map {height: calc(100vh - 100px) !important;}"),
     #--Plural TabItems
     tabItems(
       #--One TabItem
       tabItem(tabName="nav",
         #Row
         fluidRow(
-          column(width=8,
+          column(width=6,
           box(width=NULL, solidHeader=TRUE,status="primary",
             leafletOutput("map")
             )
           ), 
+          column(width=6,
+                    box(width=NULL, solidHeader=TRUE,status="primary",
+                        h3("Model Data"),
+                        h4("Current model gridpoint is at:"),
+                        htmlOutput("plotwin")
+                    ),
+                    box(width=NULL, solidHeader=TRUE, status="primary",
+                        plotOutput("timeplot")
+                    ),
+                    box(width=NULL, solidHeader=TRUE,status="primary",
+                        selectInput("dropstation", "Station", "Alpha; M15"),
+                        checkboxInput("checkbox", "Check to overlay station data.", value = FALSE)
+                ))),
+          fluidRow(
           #--
-          column(width=4,
-            box(width=NULL, solidHeader=TRUE,status="primary",
-              h3("Model Data"),
-              h4("Current model gridpoint is at:"),
-              htmlOutput("plotwin")
-              ),
-            box(width=NULL, solidHeader=TRUE,status="primary",
-              h3("Station Data"),
-              #selectizeInput("dropstation", label = NULL, choices=alls, multiple=TRUE),
-              # selectizeInput(
-              #   'dropstation', label = NULL, choices = alls,
-              #   options = list(create = TRUE)
-              # ),
-              selectInput("dropstation", "Station", allstations),
-              h4("Plot"),
-              checkboxInput("checkbox", "Check to overlay station data.", value = FALSE)
-              )
-            ),
-           ),   #End of first Fluid Row
-
-        #Row
-        fluidRow(
-          #--
-          column(width=4,
+             column(width=6,
               box(width=NULL, solidHeader=TRUE, status="primary",
                 radioButtons("radio", h3("Plot Limits"),
                   choices = list("Model min-max" = 1, "Fixed" = 2),
                   selected = 1)
-                ),
+                )),
+              column(width=6,
               box(width=NULL, solidHeader=TRUE, status="primary",
                 sliderInput("timeRange", label = "Time range", width = 300,
                   timeFormat="%F", 
@@ -70,16 +63,10 @@ dashboardPage(
                   value = c(as.POSIXct("2015-01-02 00:00:00",tz = 'GMT'),
                   as.POSIXct("2016-01-01 00:00:00",tz = 'GMT')))
                 )
-              ),
-          #--
-          #--
-          column(width=8,
-              box(width=NULL, solidHeader=TRUE, status="primary",
-                plotOutput("timeplot")
               )
-            )
+              )
         #--End Row
-      )),
+      ),
       #--End first tabItem
 
       #--Plural TabItems
@@ -107,5 +94,5 @@ dashboardPage(
   ) #End tab items   
 
   )# End dashboard Body
-) # End dashboard Page
+)
 

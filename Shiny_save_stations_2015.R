@@ -99,13 +99,13 @@ save(lastdf,file="~/JamesPaper/SaveRenamed_lastdf.Rdata")
 #---
 
 #AllStations has just the node/lat/lon/Station info for the markers
-AllStations <- lastdf[,c('Station','Node','Latitude','Longitude','Source')]
+AllStations <- lastdf[,c('Station','Node','Latitude','Longitude','Source','Zone')]
 AllStations <- distinct(AllStations,Station,.keep_all=TRUE)
 #Add a distinct layer id
 rstring <- stri_rand_strings(131,20)
 AllStations$layerId <- rstring
 #Names used are Station, Lat, Lon, Node
-colnames(AllStations) <- c('Station','Node','Lat','Lon','Source','layerId')
+colnames(AllStations) <- c('Station','Node','Lat','Lon','Source','Zone','layerId')
 save(AllStations,file="~/R_apps/shiny-lm/data/AllStations.Rdata")
 
 #Data for the measurements/plots

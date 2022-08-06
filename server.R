@@ -5,6 +5,41 @@ library(shinydashboard)
 library(dplyr)
 library(ggplot2)
 
+Year <- 2015
+
+#Year dependent but same filenames
+path <- file.path("data",Year,"TP_2Layers.Rdata")
+#netCDF model output and Time
+load(path)
+
+#Not dependent on year:
+#Original file Mark's Rdata LM_grid
+#I saved just node, lat, lon
+#This is for the whole FVCOM grid
+path <- file.path("data","LM_gridpoints.Rdata")
+load(path)
+#Number of gridpoints in FVCOM grid
+npoints <- length(LM_gridpoints$node)
+
+#Location of Tributaries
+#From Mark's original file, and I kept Trib, Lat/Lon, and USGS.Station
+path <- file.path("data","DolanLoadLocations.Rdata")
+load(path)
+
+#StationData is from a csv from Wilson
+#AllStations are the station/lat/lon for map markers
+path <- file.path("data","AllStations.Rdata")
+load(path)
+
+#StationData is the actual Time/TP data, also has Depth
+path <- file.path("~/R_apps/shiny-lm/data",Year,"StationData.Rdata")
+load(path)
+
+allstations <- AllStations$Station
+allsources <- unique(AllStations$Source)
+
+muskstations <- AllStations$Station[AllStations$Zone == "Muskegon_Grand_Zone"]
+
 Pothoven <- makeAwesomeIcon(
   icon = "anchor",
   iconColor = "green",
@@ -51,19 +86,19 @@ function(input, output, session) {
 
       leafletProxy("map",data=AllStations[AllStations$Source=="Pothoven",]) %>%
 #      clearShapes() %>%
-      addAwesomeMarkers(~Lon, ~Lat, icon=Pothoven, label = ~Station, popup=~Station,layerId=~layerId,
+      addAwesomeMarkers(~Lon, ~Lat, icon=Pothoven, label = ~Station, layerId=~layerId,
                  group="Pothoven") 
     
     leafletProxy("map",data=AllStations[AllStations$Source=="GLNPO",]) %>%    
-      addAwesomeMarkers(~Lon, ~Lat, icon=GLNPO, label = ~Station, popup=~Station,layerId=~layerId,
+      addAwesomeMarkers(~Lon, ~Lat, icon=GLNPO, label = ~Station, layerId=~layerId,
                       group="GLNPO") 
       
     leafletProxy("map",data=AllStations[AllStations$Source=="CSMI",]) %>%      
-      addAwesomeMarkers(~Lon, ~Lat, icon=CSMI, label = ~Station, popup=~Station,layerId=~layerId,
+      addAwesomeMarkers(~Lon, ~Lat, icon=CSMI, label = ~Station, layerId=~layerId,
                       group="CSMI") 
       
     leafletProxy("map",data=AllStations[AllStations$Source=="NCCA",]) %>%      
-      addAwesomeMarkers(~Lon, ~Lat, icon=NCCA, label = ~Station, popup=~Station,layerId=~layerId,
+      addAwesomeMarkers(~Lon, ~Lat, icon=NCCA, label = ~Station, layerId=~layerId,
                       group="NCCA") 
     
     leafletProxy("map",data=DolanLoadLocations) %>%
@@ -163,13 +198,17 @@ function(input, output, session) {
       axis.Date(1, Time,format="%b %d")
       mtext("TP Bottom Layer", side=3, line=1, col="#994F00", cex=1, adj=1)
       mtext("TP Surface Layer", side=3, line=1, col="#006CD1", cex=1, adj=0)
+      
+      rbPal <- colorRampPalette(c('red','blue'))
+      
     
       if(input$checkbox){
         if(input$dropstation != "None selected"){ 
           plotstation <- StationData[StationData$Station == input$dropstation,]
-        points(plotstation$Date,plotstation$TP,pch=23,col="black",bg="#D9CA4B",cex=1.2,xlab=plotstation$Station)
-        mtext(plotstation$Station,side=1,cex=2,line=3)
-        mtext(plotstation$Source,side=4)
+          plotstation$Col <- rbPal(10)[as.numeric(cut(plotstation$Depth,breaks = 10))]
+          points(plotstation$Date,plotstation$TP,pch=23,col="black",bg=plotstation$Col,cex=1.2,xlab=plotstation$Station)
+        #points(plotstation$Date,plotstation$TP,pch=23,col="black",bg="#D9CA4B",cex=1.2,xlab=plotstation$Station)
+        mtext(plotstation$Station,side=1,cex=1,line=3)
       }}
   })
 
@@ -195,13 +234,29 @@ function(input, output, session) {
   })
   
   
-
-
-  
       #updateSelectizeInput(session, 'dropstation', choices = AllStations, server = TRUE)
-    updateSelectizeInput(session, 'dropstation', choices = allstations, server = TRUE)
+    updateSelectizeInput(session, 'dropstation', choices = "Alpha; M15", server = TRUE)
 
-
+    # When map is clicked, show a popup with city info
+    observe({
+      leafletProxy("map") %>% clearPopups()
+      event <- input$map_marker_click
+      if (is.null(event))
+        return()
+      
+      isolate({
+        showZipcodePopup(event$id, event$lat, event$lng)
+      })
+    })
+    
+    # Show a popup at the given location
+    showZipcodePopup <- function(zipcode, lat, lng) {
+      selectedZip <- AllStations[AllStations$layerId == zipcode,]
+      content <- selectedZip$Station
+      output$markerclick <- renderUI({HTML(content)})
+      updateSelectizeInput(session, 'dropstation', choices = content, server = TRUE)
+    }
+    
 
 
 }
