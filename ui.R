@@ -21,51 +21,39 @@ dashboardPage(
 
   #--Dashboard  
   dashboardBody(
-    tags$style(type = "text/css", "#map {height: calc(100vh - 100px) !important;}"),
+    tags$style(type = "text/css", "#map {height: calc(80vh) !important;}"),
     #--Plural TabItems
     tabItems(
       #--One TabItem
       tabItem(tabName="nav",
         #Row
         fluidRow(
-          column(width=6,
-          box(width=NULL, solidHeader=TRUE,status="primary",
-            leafletOutput("map")
-            )
-          ), 
-          column(width=6,
-                    box(width=NULL, solidHeader=TRUE,status="primary",
-                        h3("Model Data"),
-                        h4("Current model gridpoint is at:"),
-                        htmlOutput("plotwin")
-                    ),
-                    box(width=NULL, solidHeader=TRUE, status="primary",
-                        plotOutput("timeplot")
-                    ),
-                    box(width=NULL, solidHeader=TRUE,status="primary",
-                        selectInput("dropstation", "Station", "Alpha; M15"),
-                        checkboxInput("checkbox", "Check to overlay station data.", value = FALSE)
-                ))),
-          fluidRow(
-          #--
-             column(width=6,
-              box(width=NULL, solidHeader=TRUE, status="primary",
-                radioButtons("radio", h3("Plot Limits"),
-                  choices = list("Model min-max" = 1, "Fixed" = 2),
-                  selected = 1)
-                )),
-              column(width=6,
-              box(width=NULL, solidHeader=TRUE, status="primary",
-                sliderInput("timeRange", label = "Time range", width = 300,
-                  timeFormat="%F", 
-                  min = as.POSIXct("2015-01-02 00:00:00",tz = 'GMT'),
-                  max = as.POSIXct("2016-01-01 00:00:00",tz = 'GMT'),
-                  value = c(as.POSIXct("2015-01-02 00:00:00",tz = 'GMT'),
-                  as.POSIXct("2016-01-01 00:00:00",tz = 'GMT')))
-                )
-              )
-              )
-        #--End Row
+          column(width=5,
+                 box(width=NULL, solidHeader=TRUE,status="primary",
+                     leafletOutput("map")
+                 )),
+          column(width=5,
+                 box(width=NULL,solidHeader=TRUE,status="primary",
+                     
+                     plotOutput("timeplot"))),
+                 column(width=2,
+                 box(width=NULL,solidHeader=TRUE,status="primary",
+                     strong("Model Output"),
+                     htmlOutput("plotwin"),
+                     br(),
+                             selectInput("dropstation", "Station", "Alpha; M15"),
+                             checkboxInput("checkbox", "Check to overlay station data.", value = FALSE),
+                             radioButtons("radio", "Plot Limits",
+                                          choices = list("Model min-max" = 1, "Fixed" = 2),
+                                         selected = 1),
+            sliderInput("timeRange", label = "Time range", 
+             timeFormat="%F", 
+                                     min = as.POSIXct("2015-01-02 00:00:00",tz = 'GMT'),
+                                     max = as.POSIXct("2016-01-01 00:00:00",tz = 'GMT'),
+                                     value = c(as.POSIXct("2015-01-02 00:00:00",tz = 'GMT'),
+                                               as.POSIXct("2016-01-01 00:00:00",tz = 'GMT'))))
+                 )
+                )#--End Row
       ),
       #--End first tabItem
 
