@@ -22,6 +22,7 @@ dashboardPage(
   #--Dashboard  
   dashboardBody(
     tags$style(type = "text/css", "#map {height: calc(80vh) !important;}"),
+    tags$style(type = "text/css", "#map {timeplot: calc(50vh) !important;}"),
     #--Plural TabItems
     tabItems(
       #--One TabItem
