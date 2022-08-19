@@ -42,7 +42,7 @@ dashboardPage(
                      strong("Model Output"),
                      htmlOutput("plotwin"),
                      br(),
-                        selectInput("dropstation", "Station", "Alpha; M15"),
+                        selectInput("dropstation", "Station", "Alpha"),
                        checkboxInput("checkbox", "Check to overlay station data.", value = FALSE)),
                     column(width=3,
                        radioButtons("radio", "Plot Limits",

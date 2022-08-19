@@ -9,7 +9,10 @@ Year <- 2015
 
 #Year dependent but same filenames
 path <- file.path("data",Year,"TP_2Layers.Rdata")
-#netCDF model output and Time
+#netCDF model output
+load(path)
+path <- file.path("data",Year,"Time.Rdata")
+#Time
 load(path)
 
 #Not dependent on year:
@@ -21,11 +24,11 @@ load(path)
 #Number of gridpoints in FVCOM grid
 npoints <- length(LM_gridpoints$node)
 
+
 #Location of Tributaries
 #From Mark's original file, and I kept Trib, Lat/Lon, and USGS.Station
 path <- file.path("data","DolanLoadLocations.Rdata")
 load(path)
-
 
 
 Pothoven <- makeAwesomeIcon(
@@ -34,24 +37,14 @@ Pothoven <- makeAwesomeIcon(
   markerColor = "white",
   library = "fa"
 )
-GLNPO <- makeAwesomeIcon(
-  icon = "anchor",
-  iconColor = "blue",
-  markerColor = "white",
-  library = "fa"
-)
+
 CSMI <- makeAwesomeIcon(
   icon = "anchor",
   iconColor = "pink",
   markerColor = "white",
   library = "fa"
 )
-NCCA <- makeAwesomeIcon(
-  icon = "anchor",
-  iconColor = "purple",
-  markerColor = "white",
-  library = "fa"
-)
+
 
 function(input, output, session) {
 
@@ -77,17 +70,11 @@ function(input, output, session) {
       addAwesomeMarkers(~Lon, ~Lat, icon=Pothoven, label = ~Station, layerId=~layerId,
                  group="Pothoven") 
     
-    leafletProxy("map",data=AllStations[AllStations$Source=="GLNPO",]) %>%    
-      addAwesomeMarkers(~Lon, ~Lat, icon=GLNPO, label = ~Station, layerId=~layerId,
-                      group="GLNPO") 
       
     leafletProxy("map",data=AllStations[AllStations$Source=="CSMI",]) %>%      
       addAwesomeMarkers(~Lon, ~Lat, icon=CSMI, label = ~Station, layerId=~layerId,
                       group="CSMI") 
       
-    leafletProxy("map",data=AllStations[AllStations$Source=="NCCA",]) %>%      
-      addAwesomeMarkers(~Lon, ~Lat, icon=NCCA, label = ~Station, layerId=~layerId,
-                      group="NCCA") 
     
     leafletProxy("map",data=DolanLoadLocations) %>%
       addMarkers(~Lon, ~Lat, popup=~Trib, label=~Trib,layerId=~Trib, 
@@ -98,8 +85,8 @@ function(input, output, session) {
                     stroke=FALSE, fillOpacity=.8, fillColor="blue",group="Model") %>%
 
       addLayersControl(
-        overlayGroups = c("Model","Tributaries","Pothoven","GLNPO","CSMI","NCCA"),
-        options = layersControlOptions(collapsed = TRUE)
+        overlayGroups = c("Model","Tributaries","Pothoven","CSMI"),
+        options = layersControlOptions(collapsed = FALSE)
       )
     
   })
@@ -222,7 +209,7 @@ function(input, output, session) {
   
   
       #updateSelectizeInput(session, 'dropstation', choices = AllStations, server = TRUE)
-    updateSelectizeInput(session, 'dropstation', choices = "Alpha; M15", server = TRUE)
+    updateSelectizeInput(session, 'dropstation', choices = "Alpha", server = TRUE)
 
     # When map is clicked, show a popup with city info
     observe({

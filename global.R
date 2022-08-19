@@ -14,4 +14,4 @@ load(path)
 allstations <- AllStations$Station
 allsources <- unique(AllStations$Source)
 
-muskstations <- AllStations$Station[AllStations$Zone == "Muskegon_Grand_Zone"]
+
