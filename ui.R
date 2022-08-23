@@ -47,7 +47,7 @@ dashboardPage(
                        checkboxInput("checkbox", "Check to overlay station data.", value = FALSE)),
                     column(width=3,
                        radioButtons("radio", "Plot Limits",
-                                          choices = list("Model min-max" = 1, "Fixed" = 2),
+                                          choices = list("Model min-max" = 1, "Fixed, 2-15" = 2,"Fixed, 2-45" = 3),
                                          selected = 1)),
                     column(width=4,
                        sliderInput("timeRange", label = "Time range", 

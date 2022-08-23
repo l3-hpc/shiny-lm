@@ -155,9 +155,12 @@ function(input, output, session) {
       if(input$radio == "1"){       
         ymi <- min(min(TP_Surf),min(TP_Bot))
         yma <- max(max(TP_Surf),max(TP_Bot))
-      }else{
+      }else if(input$radio == "2") {
         ymi <- 2
         yma <- 15
+        }else{
+        ymi <- 2
+        yma <- 45
       }
     
       ind_1 <- which(Time == input$timeRange[1])
@@ -181,7 +184,7 @@ function(input, output, session) {
           plotstation <- StationData[StationData$Station == input$dropstation,]
           #plotstation$Col <- rbPal[as.numeric(cut(plotstation$Depth,breaks = 3))]
           #points(plotstation$Date,plotstation$TP,pch=23,col="black",bg=plotstation$Col,cex=1.2,xlab=plotstation$Station)
-        points(plotstation$Date,plotstation$TP,pch=23,col="black",bg="#D9CA4B",cex=1.2,xlab=plotstation$Station)
+        points(plotstation$Date,plotstation$TP,pch=23,col="black",bg="#D9CA4B",cex=2.2,xlab=plotstation$Station)
         mtext(plotstation$Station,side=1,cex=1,line=3)
       }}
   })
