@@ -155,9 +155,9 @@ function(input, output, session) {
       if(input$radio == "1"){       
         ymi <- min(min(TP_Surf),min(TP_Bot))
         yma <- max(max(TP_Surf),max(TP_Bot))
-      }else {
+      }else{
         ymi <- 2
-        yma <- 12
+        yma <- 15
       }
     
       ind_1 <- which(Time == input$timeRange[1])
